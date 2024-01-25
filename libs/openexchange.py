@@ -1,6 +1,7 @@
 import requests
 from cachetools import cached, TTLCache
 
+
 class OpenExchangeClient:
     BASE_URL = "https://openexchangerates.org/api"
 
@@ -21,3 +22,8 @@ class OpenExchangeClient:
         else:
             from_in_usd = from_amount / rates[from_currency]
             return from_in_usd * to_rate
+
+    @property
+    def current_list(self):
+        list_of_currency = [key for key in self.latest["rates"]]
+        return list_of_currency
