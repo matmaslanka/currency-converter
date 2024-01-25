@@ -1,6 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
+from libs.openexchange import OpenExchangeClient
 
+APP_ID = "d3f8f1713f8f47058623feeda02c90d6"
+
+client = OpenExchangeClient(APP_ID)
 
 def input_currency():
     # get selected value
@@ -40,13 +44,13 @@ title_label.pack(side="top", fill="x")
 from_label = tk.Label(main_window, text="FROM:")
 from_label.place(x=25, y=170)
 
-currency_from = ttk.Combobox(main_window, state="readonly", values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+currency_from = ttk.Combobox(main_window, state="readonly", values=client.current_list)
 currency_from.place(x=25, y=200)
 
 to_label = tk.Label(main_window, text="TO:")
 to_label.place(x=220, y=170)
 
-currency_to = ttk.Combobox(main_window, state="readonly", values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+currency_to = ttk.Combobox(main_window, state="readonly", values=client.current_list)
 currency_to.place(x=220, y=200)
 
 amount_label = tk.Label(main_window, text="AMOUNT")
