@@ -1,35 +1,55 @@
 import tkinter as tk
-from tkinter import messagebox, ttk
+# import time
+from tkinter import ttk
 from libs.openexchange import OpenExchangeClient
 
 APP_ID = "d3f8f1713f8f47058623feeda02c90d6"
 
 client = OpenExchangeClient(APP_ID)
 
+
 def input_currency():
     # get selected value
     from_value = currency_from.get()
-    return from_value
+    if from_value == "":
+        return "USD"
+    else:
+        return str(from_value)
 
 
 def output_currency():
     # get selected value
     to_value = currency_to.get()
-    return to_value
+    if to_value == "":
+        return "PLN"
+    else:
+        return str(to_value)
 
 
 def amount_currency():
     amount_value = amount.get()
-    return amount_value
+    if amount_value == "":
+        return 0
+    else:
+        return float(amount_value)
 
 
 def equation():
-    multi = int(output_currency())*int(input_currency())*int(amount_currency())
-    messagebox.showinfo(
-        message=f"The selected value is: {multi}",
-        title="Selected"
-    )
+    multi = client.convert(amount_currency(), input_currency(), output_currency())
     return multi
+
+
+def result():
+    info = f"{amount_currency():.2f} {input_currency()} = {equation():.2f} {output_currency()}"
+    message = tk.Label(main_window, text=info)
+    message.place(x=25, y=300)
+    return message
+
+
+# I need to add when was last update
+# def last_update():
+#     update_info =
+#     update_info.place(x=25, y= 330)
 
 
 main_window = tk.Tk()
@@ -59,9 +79,6 @@ amount_label.place(x=25, y=230)
 amount = tk.Entry(main_window)
 amount.place(x=25, y=260)
 
-result = tk.Label(main_window, text=":)")
-result.place(x=25, y=300)
-
-button = ttk. Button(text="Poka co tam!", command=equation)  # To jest na razie tymczasowe
-button.place(x=25, y=360)  # To jest na razie tymczasowe
+button = ttk. Button(text="Convert!", command=lambda: [equation(), result()])
+button.place(x=25, y=360)
 main_window.mainloop()
